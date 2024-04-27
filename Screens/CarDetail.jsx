@@ -36,7 +36,7 @@ const CarDetails = () => {
               <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('RequestQuote')}>
                 Cotizar
               </Button>
-    
+
             </View>
           </Card.Content>
         </Card>

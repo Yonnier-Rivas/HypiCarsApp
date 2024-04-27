@@ -68,7 +68,7 @@ const RequestQuote = () => {
           activeOutlineColor="#3B63A8"
           keyboardType="phone-pad"
         />
-        
+
         <Button mode="contained" onPress={handleSubmit} style={styles.button} color="#3B63A8">
           Enviar
         </Button>
@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 16,
-    borderRadius: 20, 
+    borderRadius: 20,
   },
   button: {
     marginTop: 16,
-    backgroundColor:'#3B63A8',
+    backgroundColor: '#3B63A8',
   },
   modal: {
     padding: 24,

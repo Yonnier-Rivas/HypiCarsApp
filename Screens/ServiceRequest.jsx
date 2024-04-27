@@ -107,7 +107,7 @@ const ServiceRequest = () => {
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
           <Subheading>¡Solicitud de servicio enviada exitosamente!</Subheading>
           <Divider style={styles.divider} />
-          <Button mode="contained" onPress={hideModal}  style={styles.button}>
+          <Button mode="contained" onPress={hideModal} style={styles.button}>
             Aceptar
           </Button>
         </Modal>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
-    backgroundColor:'#3B63A8',
+    backgroundColor: '#3B63A8',
   },
   modal: {
     padding: 24,

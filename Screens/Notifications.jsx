@@ -4,10 +4,10 @@ import { Avatar, Card, Text } from 'react-native-paper';
 
 const Notifications = () => (
     <ScrollView>
-        <Card mode='outlined' style={{margin: 10}}>
+        <Card mode='outlined' style={{ margin: 10 }}>
             <Card.Content>
                 <Card.Title
-                title="Bienvenido a HipyCars"
+                    title="Bienvenido a HipyCars"
                     left={(props) => (
                         <Avatar.Image
                             {...props}
@@ -16,14 +16,14 @@ const Notifications = () => (
                         />
                     )}
                 />
-            <Text variant="bodyMedium">Aqui podras encontrar el carro de tus sueños con las mejores ofertas.</Text>
+                <Text variant="bodyMedium">Aqui podras encontrar el carro de tus sueños con las mejores ofertas.</Text>
             </Card.Content>
         </Card>
 
-        <Card mode='outlined' style={{margin: 10}}>
+        <Card mode='outlined' style={{ margin: 10 }}>
             <Card.Content>
                 <Card.Title
-                title="Mantenimiento preventivo"
+                    title="Mantenimiento preventivo"
                     left={(props) => (
                         <Avatar.Image
                             {...props}
@@ -32,7 +32,7 @@ const Notifications = () => (
                         />
                     )}
                 />
-            <Text variant="bodyMedium">Tienes agendada una cita para un mantenimiento preventivo</Text>
+                <Text variant="bodyMedium">Tienes agendada una cita para un mantenimiento preventivo</Text>
             </Card.Content>
         </Card>
 

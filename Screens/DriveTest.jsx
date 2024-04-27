@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 16,
-    borderRadius: 20, 
+    borderRadius: 20,
   },
   button: {
     marginTop: 16,
-    backgroundColor:'#3B63A8',
+    backgroundColor: '#3B63A8',
   },
   modal: {
     padding: 24,
