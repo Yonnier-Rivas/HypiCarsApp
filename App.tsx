@@ -12,6 +12,8 @@ import DriveTest from './Screens/DriveTest';
 import Notifications from './Screens/Notifications';
 import ServiceHistory from './Screens/ServiceHistory';
 import ServiceRequest from './Screens/ServiceRequest';
+import DealerInformation from './Screens/DealerInformation';
+import RequestQuote from './Screens/RequestQuote';
 
 import FirebaseState from './context/firebase/firebaseState';
 import RequestState from './context/requests/requestState';
@@ -42,21 +44,46 @@ const App = () => {
           <Stack.Navigator
             screenOptions={{
               headerStyle:{
-                backgroundColor: '#FFDA00'
+                backgroundColor: '#EDEEEF'
               },
               headerTitleStyle:{
-                fontWeight: 'bold'
-              }
+                fontWeight: 'bold',
+                color: '#3B63A8',
+              },
+
+              //Se ha habilitado la navegación por gestos deslizando horizontalmente.
+              gestureEnabled: true,
+              gestureDirection: 'horizontal',
+              headerTitleAlign: 'center'
             }}>
             <Stack.Screen name="Home" component={Home} 
               options={{title: 'HypiCars'}} 
             />
-            <Stack.Screen name="CarDetail" component={CarDetail} />
-            <Stack.Screen name="CarsCatalog" component={CarsCatalog} />
-            <Stack.Screen name="DriveTest" component={DriveTest} />
-            <Stack.Screen name="Notifications" component={Notifications} />
-            <Stack.Screen name="ServiceHistory" component={ServiceHistory} />
-            <Stack.Screen name="ServiceRequest" component={ServiceRequest} />
+            <Stack.Screen name="CarDetail" component={CarDetail} 
+              options={{title: 'Detalle de Vehículo'}} 
+            />
+            <Stack.Screen name="CarsCatalog" component={CarsCatalog} 
+              options={{title: 'Vehículos disponibles'}} 
+            />
+            <Stack.Screen name="DriveTest" component={DriveTest} 
+              options={{title: 'Prueba de Manejo'}}
+            />
+            <Stack.Screen name="Notifications" component={Notifications} 
+              options={{title: 'Notificaciones'}} 
+            />
+            <Stack.Screen name="ServiceHistory" component={ServiceHistory} 
+              options={{title: 'Historial de Servicio'}}
+             />
+            <Stack.Screen name="ServiceRequest" component={ServiceRequest}
+              options={{title: 'Solicitud de Servicio'}}
+            />
+            <Stack.Screen name="DealerInformation" component={DealerInformation}
+              options={{title: 'Concesionario'}}
+            />
+            <Stack.Screen name="RequestQuote" component={RequestQuote}
+              options={{title: 'Cotizar'}}
+            />
+
           </Stack.Navigator>
         </NavigationContainer>
       </RequestState>

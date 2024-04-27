@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
 
-const ServiceRequest = () => {
+const RequestQuote = () => {
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [vehicleModel, setVehicleModel] = useState('');
-  const [serviceType, setServiceType] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [idNumber, setIdNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
-  const [appointmentTime, setAppointmentTime] = useState('')
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
@@ -18,12 +16,11 @@ const ServiceRequest = () => {
   const handleSubmit = () => {
     // Lógica para enviar el formulario
     console.log('Nombre:', name);
-    console.log('Teléfono:', phone);
-    console.log('Correo electrónico:', email);
-    console.log('Modelo de vehículo:', vehicleModel);
-    console.log('Tipo de servicio:', serviceType);
+    console.log('Apellidos:', lastName);
+    console.log('Número de identificación:', idNumber);
+    console.log('Número de celular:', phoneNumber);
     console.log('Fecha de cita:', appointmentDate);
-    console.log('Hora:', appointmentTime);
+
     // Mostrar el modal de confirmación
     showModal();
   };
@@ -31,8 +28,8 @@ const ServiceRequest = () => {
   return (
     <Provider>
       <ScrollView contentContainerStyle={styles.container}>
-        <Headline style={styles.title}>Solicitar Servicio</Headline>
-        <Text style={styles.subtitle}>¿Deseas slicitar un servicio? Llena el siguiente formulario:</Text>
+        <Headline style={styles.title}>Cotizar Vehículo</Headline>
+        <Text style={styles.subtitle}>¿Deseas cotizar este vehículo. Llena el siguiente formulario:</Text>
         <TextInput
           label="Nombre"
           value={name}
@@ -43,71 +40,45 @@ const ServiceRequest = () => {
           activeOutlineColor="#3B63A8"
         />
         <TextInput
-          label="Teléfono"
-          value={phone}
-          onChangeText={setPhone}
+          label="Apellidos"
+          value={lastName}
+          onChangeText={setLastName}
+          style={styles.input}
+          mode="outlined"
+          outlineColor="#3B63A8"
+          activeOutlineColor="#3B63A8"
+        />
+        <TextInput
+          label="Número de identificación"
+          value={idNumber}
+          onChangeText={setIdNumber}
+          style={styles.input}
+          mode="outlined"
+          outlineColor="#3B63A8"
+          activeOutlineColor="#3B63A8"
+          keyboardType="numeric"
+        />
+        <TextInput
+          label="Número de celular"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
           style={styles.input}
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType="phone-pad"
         />
-        <TextInput
-          label="Correo electrónico"
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-          keyboardType="email-address"
-        />
-        <TextInput
-          label="Modelo de vehículo"
-          value={vehicleModel}
-          onChangeText={setVehicleModel}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-        />
-        <TextInput
-          label="Tipo de servicio"
-          value={serviceType}
-          onChangeText={setServiceType}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-        />
-        <TextInput
-          label="Fecha de cita"
-          value={appointmentDate}
-          onChangeText={setAppointmentDate}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-        />
-        <TextInput
-          label="Hora"
-          value={appointmentDate}
-          onChangeText={setAppointmentTime}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-        />
-        <Button mode="contained" onPress={handleSubmit} style={styles.button} >
+        
+        <Button mode="contained" onPress={handleSubmit} style={styles.button} color="#3B63A8">
           Enviar
         </Button>
       </ScrollView>
 
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
-          <Subheading>¡Solicitud de servicio enviada exitosamente!</Subheading>
+          <Subheading>¡Cotización enviada exitosamente!</Subheading>
           <Divider style={styles.divider} />
-          <Button mode="contained" onPress={hideModal}  style={styles.button}>
+          <Button mode="contained" onPress={hideModal} style={styles.button}>
             Aceptar
           </Button>
         </Modal>
@@ -127,9 +98,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  subtitle: {
+    marginBottom: 24,
+  },
   input: {
     marginBottom: 16,
-    borderRadius: 20,
+    borderRadius: 20, 
   },
   button: {
     marginTop: 16,
@@ -147,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ServiceRequest;
+export default RequestQuote;
