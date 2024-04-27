@@ -36,7 +36,7 @@ const CarsCatalog = () => {
   };
 
   const navigation = useNavigation();
-  
+
   return (
     <ScrollView>
       <Searchbar
@@ -53,8 +53,8 @@ const CarsCatalog = () => {
           </Card.Content>
           <Card.Cover source={car.image} style={styles.cardImage} />
           <Card.Actions>
-            <Button  mode="elevated" buttonColor="#3B63A8" textColor="white" onPress={() => navigation.navigate('CarDetail')}>
-                Más información
+            <Button mode="elevated" buttonColor="#3B63A8" textColor="white" onPress={() => navigation.navigate('CarDetail')}>
+              Más información
             </Button>
           </Card.Actions>
         </Card>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   searchBar: {
     margin: 10,
     backgroundColor: '#D7E3F0',
-    
+
   },
   card: {
     margin: 10,

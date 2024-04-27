@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, ImageBackground, Image} from 'react-native'
+import { View, StyleSheet, ImageBackground, Image } from 'react-native'
 import { Container, Button, Text } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -9,31 +9,31 @@ const Home = () => {
 
   return (
     <ImageBackground source={require('../images/white.jpg')} style={styles.backgroundImage}>
-        <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.buttonContainer}>
-                <Button style={styles.button} onPress={() => navigation.navigate('CarsCatalog')}>
-                <Text style={styles.buttonText}>Vehículos disponibles</Text>
-                </Button>
-                <Button style={styles.button} onPress={() => navigation.navigate('Notifications')}>
-                <Text style={styles.buttonText}>Notificaciones</Text>
-                </Button>
-                <Button style={styles.button} onPress={() => navigation.navigate('ServiceHistory')}>
-                <Text style={styles.buttonText}>Historial de Servicios</Text>
-                </Button>
-                <Button style={styles.button} onPress={() => navigation.navigate('ServiceRequest')}>
-                <Text style={styles.buttonText}>Solicitar Servicio</Text>
-                </Button>
-                <Button style={styles.button} onPress={() => navigation.navigate('DealerInformation')}>
-                <Text style={styles.buttonText}>Nosotros</Text>
-                </Button>
-            </View>
-        </ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Button style={styles.button} onPress={() => navigation.navigate('CarsCatalog')}>
+            <Text style={styles.buttonText}>Vehículos disponibles</Text>
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('Notifications')}>
+            <Text style={styles.buttonText}>Notificaciones</Text>
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('ServiceHistory')}>
+            <Text style={styles.buttonText}>Historial de Servicios</Text>
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('ServiceRequest')}>
+            <Text style={styles.buttonText}>Solicitar Servicio</Text>
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('DealerInformation')}>
+            <Text style={styles.buttonText}>Nosotros</Text>
+          </Button>
+        </View>
+      </ScrollView>
     </ImageBackground>
   )
 };
 
 const styles = StyleSheet.create({
-   backgroundImage: {
+  backgroundImage: {
     flex: 1,
     resizeMode: 'cover', //la imagen cubre toda la pantalla
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
   },
   buttonText: {
-    color: 'white', 
+    color: 'white',
     fontWeight: '400',
   },
 });
