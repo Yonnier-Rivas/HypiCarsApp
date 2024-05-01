@@ -1,47 +1,52 @@
 import React from 'react';
-import { View, StyleSheet, Image, Alert } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Card, Text, Divider, Button } from 'react-native-paper';
+import { Avatar, Card, Text, Divider, Button } from 'react-native-paper';
 
-
-const CarDetails = ({route}) => {
-  const {car} = route.params;
-
+const CarDetails = ({ route }) => {
+  const { car } = route.params;
   const navigation = useNavigation();
+
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.cardContainer}>
         <Card style={styles.card}>
-          <Card.Content>
-          <Card.Cover source={{ uri: car.image}} style={styles.image} />
+          <Card.Cover source={{ uri: car.image }} style={styles.cardCover} />
+          <Card.Content style={styles.cardContent}>
             <Text variant="titleLarge" style={styles.carName}>
-              {car.brand}
-            </Text>
-            <Text variant="titleLarge" style={styles.carName}>
-              {car.model}
+              {car.brand} {car.model}
             </Text>
             <Text variant="bodyMedium" style={styles.price}>
-            	{car.price.toLocaleString()} $
+              {car.price.toLocaleString()} $
             </Text>
+            <Avatar.Text
+              size={30}
+              label={car.condition}
+              style={styles.brandAvatar}
+            />
             <Divider style={styles.divider} />
-            <Text variant="bodyLarge">
+            <Text variant="bodyLarge" style={styles.description}>
               {car.description}
             </Text>
-            <View style={styles.detailsContainer}>
-            </View>
             <View style={styles.buttonContainer}>
-              <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('DriveTest')}>
+              <Button
+                style={styles.button}
+                mode="contained"
+                onPress={() => navigation.navigate('DriveTest')}
+              >
                 Probar
               </Button>
-              <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('RequestQuote')}>
+              <Button
+                style={styles.button1}
+                mode="contained"
+                onPress={() => navigation.navigate('RequestQuote')}
+              >
                 Cotizar
               </Button>
-
             </View>
           </Card.Content>
         </Card>
-
       </View>
     </ScrollView>
   );
@@ -50,41 +55,75 @@ const CarDetails = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: '100%'
+    backgroundColor: '#F5F5F5',
+  },
+  cardContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 24,
   },
   card: {
-    marginHorizontal: 16,
-    marginVertical: 30,
+    borderRadius: 16,
+    elevation: 4,
+    backgroundColor: '#F9FCFF',
   },
-  image: {
-    marginBottom: 10,
-    borderRadius: 20,
+  cardCover: {
+    height: 200,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  cardContent: {
+    padding: 16,
   },
   carName: {
     fontWeight: 'bold',
-    marginBottom: 2,
+    fontSize: 24,
+    color: '#333333',
+    marginBottom: 8,
   },
   price: {
     fontWeight: 'bold',
+    fontSize: 18,
+    color: '#3B63A8',
     marginBottom: 16,
   },
-  divider: {
-    marginVertical: 8,
+  brandAvatar: {
+    backgroundColor: '#E0E9EE',
+    marginLeft: 4,
+    width: 55,
+    borderRadius: 16,
+
   },
-  detailsContainer: {
-    marginTop: 4,
+  divider: {
+    marginVertical: 16,
+    backgroundColor: '#E0E0E0',
+  },
+  description: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#555555',
+    marginBottom: 16,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginVertical: 35,
   },
   button: {
-    marginVertical: 8,
-    width: 100,
-    borderRadius: 100,
+    margin: 5,
+    marginHorizontal: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 24,
     backgroundColor: '#3B63A8',
-    shadowColor: '#000',
+    elevation: 2,
+  },
+  button1: {
+    margin: 5,
+    marginHorizontal: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 24,
+    backgroundColor: '#5C6972',
+    elevation: 2,
   },
 });
 
