@@ -37,6 +37,9 @@ const StringAndNumericValidation = ({ value, onChangeText, ...rest }) => {
   return (
     <TextInput
       value={value}
+      mode="outlined"
+      outlineColor="#3B63A8"
+      activeOutlineColor="#3B63A8"
       onChangeText={handleTextChange}
       error={!isValid}
       {...rest}
