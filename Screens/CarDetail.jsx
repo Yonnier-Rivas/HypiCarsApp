@@ -1,33 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Card, Text, Divider, Button } from 'react-native-paper';
+import RequestContext from '../context/requests/requestContext';
 
 const CarDetails = ({ route }) => {
-  const { car } = route.params;
+  const { selectCar } = useContext(RequestContext)
+  const { image, brand, condition, description, model, price } = selectCar;
   const navigation = useNavigation();
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.cardContainer}>
         <Card style={styles.card}>
-          <Card.Cover source={{ uri: car.image }} style={styles.cardCover} />
+          <Card.Cover source={{ uri: image }} style={styles.cardCover} />
           <Card.Content style={styles.cardContent}>
             <Text variant="titleLarge" style={styles.carName}>
-              {car.brand} {car.model}
+              {brand} {model}
             </Text>
             <Text variant="bodyMedium" style={styles.price}>
-              {car.price.toLocaleString()} $
+              {price.toLocaleString()} $
             </Text>
             <Avatar.Text
               size={30}
-              label={car.condition}
+              label={condition}
               style={styles.brandAvatar}
             />
             <Divider style={styles.divider} />
             <Text variant="bodyLarge" style={styles.description}>
-              {car.description}
+              {description}
             </Text>
             <View style={styles.buttonContainer}>
               <Button
