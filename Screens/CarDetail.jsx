@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Card, Text, Divider, Button } from 'react-native-paper';
 import RequestContext from '../context/requests/requestContext';
 
-const CarDetails = ({ route }) => {
+const CarDetails = () => {
   const { selectCar } = useContext(RequestContext)
   const { image, brand, condition, description, model, price } = selectCar;
   const navigation = useNavigation();

@@ -38,6 +38,7 @@ const DriveTest = () => {
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
+          keyboardType='ascii-capable'
         />
         <TextInput
           label="Apellidos"
