@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
+import StringAndNumericValidation  from '../inputsValidations/validations';
 
 const DriveTest = () => {
   const [name, setName] = useState('');
@@ -39,6 +40,7 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType='ascii-capable'
+          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Apellidos"
@@ -48,6 +50,8 @@ const DriveTest = () => {
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
+          keyboardType='ascii-capable'
+          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Número de identificación"
@@ -58,6 +62,7 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType="numeric"
+          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Número de celular"
@@ -68,6 +73,7 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType="phone-pad"
+          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Fecha de cita"
