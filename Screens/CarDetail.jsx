@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#555555',
     marginBottom: 16,
+    textAlign: 'justify',
+    margin: 5,
   },
   buttonContainer: {
     flexDirection: 'row',
