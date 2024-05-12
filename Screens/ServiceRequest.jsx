@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text, Menu } from 'react-native-paper';
 import { validateName, validateDate, validateVehicleModel, validatePhone, validateEmail, ValidateSelectedService } from '../inputsValidations/validations';
 import { DatePickerInput } from 'react-native-paper-dates';
+import firebase from '../firebaseDB';
 
 const ServiceRequest = () => {
   const [name, setName] = useState('');
@@ -21,6 +22,33 @@ const ServiceRequest = () => {
   const [selectedService, setSelectedService] = useState('');
 
   const handleSubmit = () => {
+
+    const sendDataToFirebase = async (name, phone, email, vehicleModel, serviceType, appointmentDate, appointmentTime) => {
+      try {
+        const serviceRequestRef = await firebase.db.collection('ServiceRequests').add({
+          name,
+          phone,
+          email,
+          vehicleModel,
+          serviceType,
+          appointmentDate,
+          appointmentTime //DARWIN: hay que organizar este para que sea un HORA y tambien crear la vaidacion en el archivo validations.
+        });
+        console.log('Datos enviados a Firebase con ID:', serviceRequestRef.id);
+    
+        // Restablecer los campos de entrada
+        setName('');
+        setPhone('');
+        setEmail('');
+        setVehicleModel('');
+        setServiceType('');
+        setAppointmentDate(undefined);
+        setAppointmentTime('');
+      } catch (error) {
+        console.error('Error al enviar datos a Firebase:', error);
+      }
+    };
+
     const nameError = validateName(name);
     const dateError = validateDate(appointmentDate);
     const phoneError = validatePhone(phone);
@@ -28,22 +56,30 @@ const ServiceRequest = () => {
     const emailError = validateEmail(email);
     const serviceTypeError = ValidateSelectedService(selectedService);
 
-    const errors = [nameError, dateError, , phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
-    
+    const errors = [nameError, dateError, phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
+
     if (errors.length > 0) {
       Alert.alert('Error', errors.join('\n'));
     } else {
-      // Lógica para enviar el formulario
-      console.log('Nombre:', name);
-      console.log('Teléfono:', phone);
-      console.log('Correo electrónico:', email);
-      console.log('Modelo de vehículo:', vehicleModel);
-      console.log('Tipo de servicio:', serviceType);
-      console.log('Fecha de cita:', appointmentDate);
-      console.log('Hora:', appointmentTime);
-      // Mostrar el modal de confirmación
-      showModal();
-    }  
+      Alert.alert(
+        'Confirmar solicitud de servicio',
+        '¿Estás seguro de enviar la solicitud de servicio?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Enviar',
+            onPress: () => {
+              sendDataToFirebase(name, phone, email, vehicleModel, selectedService, appointmentDate, appointmentTime);
+              showModal();
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
   };
 
   return (
