@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
-import StringAndNumericValidation  from '../inputsValidations/validations';
+import { validateName, validateLastName, validateIdNumber, validatePhoneNumber, validateDate } from '../inputsValidations/validations';
+import { DatePickerInput } from 'react-native-paper-dates';
 
 const DriveTest = () => {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [idNumber, setIdNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState(undefined);
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   const handleSubmit = () => {
-    // Lógica para enviar el formulario
-    console.log('Nombre:', name);
-    console.log('Apellidos:', lastName);
-    console.log('Número de identificación:', idNumber);
-    console.log('Número de celular:', phoneNumber);
-    console.log('Fecha de cita:', appointmentDate);
+    const nameError = validateName(name);
+    const lastNameError = validateLastName(lastName);
+    const idNumberError = validateIdNumber(idNumber);
+    const phoneNumberError = validatePhoneNumber(phoneNumber);
+    const dateError = validateDate(appointmentDate);
 
-    // Mostrar el modal de confirmación
-    showModal();
+    const errors = [nameError, lastNameError, idNumberError, phoneNumberError, dateError].filter(Boolean);
+
+    if (errors.length > 0) {
+      Alert.alert('Error', errors.join('\n'));
+    } else {
+      // Lógica para enviar el formulario
+      console.log('Nombre:', name);
+      console.log('Apellidos:', lastName);
+      console.log('Número de identificación:', idNumber);
+      console.log('Número de celular:', phoneNumber);
+      console.log('Fecha de cita:', appointmentDate);
+
+      // Mostrar el modal de confirmación
+      showModal();
+    }
   };
+
+  //
 
   return (
     <Provider>
@@ -40,7 +55,6 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType='ascii-capable'
-          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Apellidos"
@@ -51,7 +65,6 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType='ascii-capable'
-          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Número de identificación"
@@ -62,7 +75,6 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType="numeric"
-          render={props => <StringAndNumericValidation {...props} />}
         />
         <TextInput
           label="Número de celular"
@@ -73,17 +85,19 @@ const DriveTest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
           keyboardType="phone-pad"
-          render={props => <StringAndNumericValidation {...props} />}
         />
-        <TextInput
+        <DatePickerInput
+          style={styles.input}  
+          locale="en"
           label="Fecha de cita"
           value={appointmentDate}
-          onChangeText={setAppointmentDate}
-          style={styles.input}
+          onChange={(d) => setAppointmentDate(d)}
+          inputMode="start"
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
         />
+
         <Button mode="contained" onPress={handleSubmit} style={styles.button} color="#3B63A8">
           Enviar
         </Button>
@@ -104,7 +118,6 @@ const DriveTest = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     padding: 16,
   },
   title: {

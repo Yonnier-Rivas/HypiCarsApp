@@ -1,50 +1,44 @@
-import React, { useState } from 'react';
-import { TextInput } from 'react-native-paper';
-import { Alert } from 'react-native';
-
-const StringAndNumericValidation = ({ value, onChangeText, ...rest }) => {
-  const [isValid, setIsValid] = useState(true);
-
-  const handleTextChange = (inputText) => {
-    let regex;
-    let validationMessage;
-    if (!isNaN(inputText)) {
-      // Validar que solo se ingresen números
-      regex = /^[0-9]+$/;
-      validationMessage = 'Ingrese solo números.';
-    } else {
-      // Validar que solo se ingresen caracteres de texto y espacios
-      regex = /^[A-Za-z\s]+$/;
-      validationMessage = 'Ingrese solo letras y espacios.';
-    }
-
-    if (regex.test(inputText) || inputText === '') {
-      setIsValid(true);
-      onChangeText(inputText);
-    } else {
-      setIsValid(false);
-      Alert.alert('Error', validationMessage, [
-        {
-          text: 'Cancelar',
-          onPress: () => console.log('Cancelar'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK') },
-      ]);
-    }
-  };
-
-  return (
-    <TextInput
-      value={value}
-      mode="outlined"
-      outlineColor="#3B63A8"
-      activeOutlineColor="#3B63A8"
-      onChangeText={handleTextChange}
-      error={!isValid}
-      {...rest}
-    />
-  );
+export const validateName = (name) => {
+  const nameRegex = /^[a-zA-Z\s]+$/;
+  if (!nameRegex.test(name)) {
+    return 'Por favor, ingrese un nombre válido.';
+  }
+  return '';
 };
 
-export default StringAndNumericValidation;
+export const validateLastName = (lastName) => {
+  const lastNameRegex = /^[a-zA-Z\s]+$/;
+  if (!lastNameRegex.test(lastName)) {
+    return 'Por favor, ingrese un apellido válido.';
+  }
+  return '';
+};
+
+export const validateIdNumber = (idNumber) => {
+  const idNumberRegex = /^\d+$/;
+  if (!idNumberRegex.test(idNumber)) {
+    return 'Por favor, ingrese un número de identificación válido.';
+  }
+  return '';
+};
+
+export const validatePhoneNumber = (phoneNumber) => {
+  const phoneNumberRegex = /^\d+$/;
+  if (!phoneNumberRegex.test(phoneNumber)) {
+    return 'Por favor, ingrese un número de celular válido.';
+  }
+  return '';
+};
+
+export const validateDate = (date) => {
+  if (!date) {
+    return 'Por favor, seleccione una fecha válida.';
+  }
+
+  const currentDate = new Date();
+  if (date < currentDate) {
+    return 'La fecha no puede ser menor a la fecha actual.';
+  }
+
+  return '';
+};
