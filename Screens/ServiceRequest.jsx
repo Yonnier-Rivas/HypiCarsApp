@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text, Menu } from 'react-native-paper';
-import { validateName, validateDate, validatVehicleModel, validatePhone,  validateEmail, ValidateSelectedService } from '../inputsValidations/validations';
+import { validateName, validateDate, validateVehicleModel, validatePhone, validateEmail, ValidateSelectedService } from '../inputsValidations/validations';
 import { DatePickerInput } from 'react-native-paper-dates';
 
 const ServiceRequest = () => {
@@ -24,11 +24,11 @@ const ServiceRequest = () => {
     const nameError = validateName(name);
     const dateError = validateDate(appointmentDate);
     const phoneError = validatePhone(phone);
-    const vehicleModelError = validatVehicleModel(vehicleModel);
+    const vehicleModelError = validateVehicleModel(vehicleModel);
     const emailError = validateEmail(email);
     const serviceTypeError = ValidateSelectedService(selectedService);
 
-    const errors = [nameError, dateError, vehicleModel, phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
+    const errors = [nameError, dateError, , phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
     
     if (errors.length > 0) {
       Alert.alert('Error', errors.join('\n'));

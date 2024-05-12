@@ -76,13 +76,13 @@ export const validateDate = (date) => {
   return '';
 };
 
-export const validatVehicleModel = (vehicleModel) => {
+export const validateVehicleModel = (vehicleModel) => {
   if (!vehicleModel.trim()) {
     return 'Por favor, ingrese un modelo.';
   }
 
-  const modelRegex = /^[a-zA-Z\s]+$/;
-  if (!modelRegex.test(vehicleModel)) {
+  const modelCarRegex = /^[a-zA-Z\s]+$/;
+  if (!modelCarRegex.test(vehicleModel)) {
     return 'Por favor, ingrese un modelo válido.';
   }
 
