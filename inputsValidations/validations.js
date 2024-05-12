@@ -1,3 +1,5 @@
+
+//Validación para el nombre
 export const validateName = (name) => {
   if (!name.trim()) {
     return 'Por favor, ingrese un nombre.';
@@ -11,6 +13,7 @@ export const validateName = (name) => {
   return '';
 };
 
+//Validación para el Apellido
 export const validateLastName = (lastName) => {
   if (!lastName.trim()) {
     return 'Por favor, ingrese un apellido.';
@@ -24,6 +27,7 @@ export const validateLastName = (lastName) => {
   return '';
 };
 
+//Validación para el número de identificación
 export const validateIdNumber = (idNumber) => {
   if (!idNumber.trim()) {
     return 'Por favor, ingrese un número de identificación.';
@@ -34,22 +38,28 @@ export const validateIdNumber = (idNumber) => {
     return 'Por favor, ingrese un número de identificación válido.';
   }
 
+  if (idNumber.length < 7 || idNumber.length > 10) {
+    return 'El número de identificación debe tener entre 7 y 10 dígitos.';
+  }
+
   return '';
 };
 
+//Validación para el número de celular
 export const validatePhoneNumber = (phoneNumber) => {
   if (!phoneNumber.trim()) {
     return 'Por favor, ingrese un número de celular.';
   }
 
-  const phoneNumberRegex = /^\d+$/;
+  const phoneNumberRegex = /^\d{10}$/; // Patrón regex para 10 dígitos
   if (!phoneNumberRegex.test(phoneNumber)) {
-    return 'Por favor, ingrese un número de celular válido.';
+    return 'Por favor, ingrese un número de celular válido (10 dígitos).';
   }
 
   return '';
 };
 
+//Validación para el número de teléfono
 export const validatePhone = (phone) => {
   if (!phone.trim()) {
     return 'Por favor, ingrese un número de teléfono.';
@@ -60,9 +70,14 @@ export const validatePhone = (phone) => {
     return 'Por favor, ingrese un número de teléfono válido.';
   }
 
+  if (phone.length < 7 || phone.length > 10) {
+    return 'El número de télefono debe tener entre 7 y 10 dígitos.';
+  }
+
   return '';
 };
 
+//Validación para la fecha
 export const validateDate = (date) => {
   if (!date) {
     return 'Por favor, seleccione una fecha válida.';
@@ -76,6 +91,8 @@ export const validateDate = (date) => {
   return '';
 };
 
+
+//Validación para el modelo de vehiculo
 export const validateVehicleModel = (vehicleModel) => {
   if (!vehicleModel.trim()) {
     return 'Por favor, ingrese un modelo.';
@@ -89,6 +106,7 @@ export const validateVehicleModel = (vehicleModel) => {
   return '';
 };
 
+//Validación para el correo Electronico
 export const validateEmail = (email) => {
   if (!email.trim()) {
     return 'Por favor, ingrese un correo electrónico.';
@@ -102,6 +120,7 @@ export const validateEmail = (email) => {
   return '';
 };
 
+//Validación para el tipo de servicio
 export const ValidateSelectedService = (selectedService) => {
   if (!selectedService.trim()) {
     return 'Por favor, seleccione un tipo de servicio.';
