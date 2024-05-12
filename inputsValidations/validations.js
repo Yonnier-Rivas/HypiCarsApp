@@ -1,32 +1,52 @@
 export const validateName = (name) => {
+  if (!name.trim()) {
+    return 'Por favor, ingrese un nombre.';
+  }
+
   const nameRegex = /^[a-zA-Z\s]+$/;
   if (!nameRegex.test(name)) {
     return 'Por favor, ingrese un nombre válido.';
   }
+
   return '';
 };
 
 export const validateLastName = (lastName) => {
+  if (!lastName.trim()) {
+    return 'Por favor, ingrese un apellido.';
+  }
+
   const lastNameRegex = /^[a-zA-Z\s]+$/;
   if (!lastNameRegex.test(lastName)) {
     return 'Por favor, ingrese un apellido válido.';
   }
+
   return '';
 };
 
 export const validateIdNumber = (idNumber) => {
+  if (!idNumber.trim()) {
+    return 'Por favor, ingrese un número de identificación.';
+  }
+
   const idNumberRegex = /^\d+$/;
   if (!idNumberRegex.test(idNumber)) {
     return 'Por favor, ingrese un número de identificación válido.';
   }
+
   return '';
 };
 
 export const validatePhoneNumber = (phoneNumber) => {
+  if (!phoneNumber.trim()) {
+    return 'Por favor, ingrese un número de celular.';
+  }
+
   const phoneNumberRegex = /^\d+$/;
   if (!phoneNumberRegex.test(phoneNumber)) {
     return 'Por favor, ingrese un número de celular válido.';
   }
+
   return '';
 };
 
