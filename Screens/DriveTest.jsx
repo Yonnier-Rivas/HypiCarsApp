@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Alert} from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
 import { validateName, validateLastName, validateIdNumber, validatePhoneNumber, validateDate } from '../inputsValidations/validations';
 import { DatePickerInput } from 'react-native-paper-dates';
+import firebase from '../firebaseDB';
 
 const DriveTest = () => {
   const [name, setName] = useState('');
@@ -16,6 +17,28 @@ const DriveTest = () => {
   const hideModal = () => setVisible(false);
 
   const handleSubmit = () => {
+
+    const sendDataToFirebase = async (name, lastName, idNumber, phoneNumber, appointmentDate) => {
+      try {
+        const drivingTestRef = await firebase.db.collection('DrivingTests').add({
+          name,
+          lastName,
+          idNumber,
+          phoneNumber,
+          appointmentDate
+        });
+        console.log('Datos enviados a Firebase con ID:', drivingTestRef.id);
+          // Restablecer los campos de entrada
+          setName('');
+          setLastName('');
+          setIdNumber('');
+          setPhoneNumber('');
+          setAppointmentDate(undefined);
+        } catch (error) {
+          console.error('Error al enviar datos a Firebase:', error);
+        }
+    };
+
     const nameError = validateName(name);
     const lastNameError = validateLastName(lastName);
     const idNumberError = validateIdNumber(idNumber);
@@ -27,19 +50,26 @@ const DriveTest = () => {
     if (errors.length > 0) {
       Alert.alert('Error', errors.join('\n'));
     } else {
-      // Lógica para enviar el formulario
-      console.log('Nombre:', name);
-      console.log('Apellidos:', lastName);
-      console.log('Número de identificación:', idNumber);
-      console.log('Número de celular:', phoneNumber);
-      console.log('Fecha de cita:', appointmentDate);
-
-      // Mostrar el modal de confirmación
-      showModal();
+      Alert.alert(
+        'Confirmar solicitud',
+        '¿Estás seguro de enviar la solicitud de prueba de manejo?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Enviar',
+            onPress: () => {
+              sendDataToFirebase(name, lastName, idNumber, phoneNumber, appointmentDate);
+              showModal();
+            },
+          },
+        ],
+        { cancelable: false }
+      );
     }
   };
-
-  //
 
   return (
     <Provider>
