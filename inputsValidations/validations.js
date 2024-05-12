@@ -50,6 +50,19 @@ export const validatePhoneNumber = (phoneNumber) => {
   return '';
 };
 
+export const validatePhone = (phone) => {
+  if (!phone.trim()) {
+    return 'Por favor, ingrese un número de teléfono.';
+  }
+
+  const phoneRegex = /^\d+$/;
+  if (!phoneRegex.test(phone)) {
+    return 'Por favor, ingrese un número de teléfono válido.';
+  }
+
+  return '';
+};
+
 export const validateDate = (date) => {
   if (!date) {
     return 'Por favor, seleccione una fecha válida.';
@@ -60,5 +73,38 @@ export const validateDate = (date) => {
     return 'La fecha no puede ser menor a la fecha actual.';
   }
 
+  return '';
+};
+
+export const validatVehicleModel = (vehicleModel) => {
+  if (!vehicleModel.trim()) {
+    return 'Por favor, ingrese un modelo.';
+  }
+
+  const modelRegex = /^[a-zA-Z\s]+$/;
+  if (!modelRegex.test(vehicleModel)) {
+    return 'Por favor, ingrese un modelo válido.';
+  }
+
+  return '';
+};
+
+export const validateEmail = (email) => {
+  if (!email.trim()) {
+    return 'Por favor, ingrese un correo electrónico.';
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return 'Por favor, ingrese un correo electrónico válido.';
+  }
+
+  return '';
+};
+
+export const ValidateSelectedService = (selectedService) => {
+  if (!selectedService.trim()) {
+    return 'Por favor, seleccione un tipo de servicio.';
+  }
   return '';
 };

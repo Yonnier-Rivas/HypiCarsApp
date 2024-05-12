@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text, Menu } from 'react-native-paper';
+import { validateName, validateDate, validatVehicleModel, validatePhone,  validateEmail, ValidateSelectedService } from '../inputsValidations/validations';
+import { DatePickerInput } from 'react-native-paper-dates';
 
 const ServiceRequest = () => {
   const [name, setName] = useState('');
@@ -8,24 +10,40 @@ const ServiceRequest = () => {
   const [email, setEmail] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [serviceType, setServiceType] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState(undefined);
   const [appointmentTime, setAppointmentTime] = useState('')
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
+
   const handleSubmit = () => {
-    // Lógica para enviar el formulario
-    console.log('Nombre:', name);
-    console.log('Teléfono:', phone);
-    console.log('Correo electrónico:', email);
-    console.log('Modelo de vehículo:', vehicleModel);
-    console.log('Tipo de servicio:', serviceType);
-    console.log('Fecha de cita:', appointmentDate);
-    console.log('Hora:', appointmentTime);
-    // Mostrar el modal de confirmación
-    showModal();
+    const nameError = validateName(name);
+    const dateError = validateDate(appointmentDate);
+    const phoneError = validatePhone(phone);
+    const vehicleModelError = validatVehicleModel(vehicleModel);
+    const emailError = validateEmail(email);
+    const serviceTypeError = ValidateSelectedService(selectedService);
+
+    const errors = [nameError, dateError, vehicleModel, phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
+    
+    if (errors.length > 0) {
+      Alert.alert('Error', errors.join('\n'));
+    } else {
+      // Lógica para enviar el formulario
+      console.log('Nombre:', name);
+      console.log('Teléfono:', phone);
+      console.log('Correo electrónico:', email);
+      console.log('Modelo de vehículo:', vehicleModel);
+      console.log('Tipo de servicio:', serviceType);
+      console.log('Fecha de cita:', appointmentDate);
+      console.log('Hora:', appointmentTime);
+      // Mostrar el modal de confirmación
+      showModal();
+    }  
   };
 
   return (
@@ -71,20 +89,58 @@ const ServiceRequest = () => {
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
         />
-        <TextInput
-          label="Tipo de servicio"
-          value={serviceType}
-          onChangeText={setServiceType}
-          style={styles.input}
-          mode="outlined"
-          outlineColor="#3B63A8"
-          activeOutlineColor="#3B63A8"
-        />
-        <TextInput
+        <Menu
+          visible={menuVisible}
+          onDismiss={() => setMenuVisible(false)}
+          anchor={
+            <TextInput
+              label="Tipo de servicio"
+              value={selectedService}
+              onFocus={() => setMenuVisible(true)}
+              onChangeText={setServiceType}
+              style={styles.input}
+              mode="outlined"
+              outlineColor="#3B63A8"
+              activeOutlineColor="#3B63A8"
+            />
+          }
+          contentStyle={styles.menuContainer}
+        >
+          <Menu.Item
+            onPress={() => {
+              setSelectedService('Mantenimiento');
+              setMenuVisible(false);
+            }}
+            title="Mantenimiento"
+            titleStyle={styles.menuItemText} 
+            style={styles.menuItem} 
+          />
+          <Menu.Item
+            onPress={() => {
+              setSelectedService('Reparación');
+              setMenuVisible(false);
+            }}
+            title="Reparación"
+            titleStyle={styles.menuItemText}
+            style={styles.menuItem}
+          />
+          <Menu.Item
+            onPress={() => {
+              setSelectedService('Revisión técnica');
+              setMenuVisible(false);
+            }}
+            title="Revisión técnica"
+            titleStyle={styles.menuItemText}
+            style={styles.menuItem}
+          />
+        </Menu>
+        <DatePickerInput
+          style={styles.input}  
+          locale="en"
           label="Fecha de cita"
           value={appointmentDate}
-          onChangeText={setAppointmentDate}
-          style={styles.input}
+          onChange={(d) => setAppointmentDate(d)}
+          inputMode="start"
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
@@ -118,7 +174,6 @@ const ServiceRequest = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     padding: 16,
   },
   title: {
@@ -144,6 +199,27 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginVertical: 16,
+  },
+  menuContainer: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    elevation: 4, 
+    shadowColor: '#000000', 
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  menuItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  menuItemText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333333',
   },
 });
 

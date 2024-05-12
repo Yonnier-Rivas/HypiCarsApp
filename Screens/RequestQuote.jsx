@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
+import { validateName, validateLastName, validateIdNumber, validatePhoneNumber} from '../inputsValidations/validations';
+
 
 const RequestQuote = () => {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [idNumber, setIdNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState('');
   const [visible, setVisible] = useState(false);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   const handleSubmit = () => {
-    // Lógica para enviar el formulario
-    console.log('Nombre:', name);
-    console.log('Apellidos:', lastName);
-    console.log('Número de identificación:', idNumber);
-    console.log('Número de celular:', phoneNumber);
-    console.log('Fecha de cita:', appointmentDate);
+    const nameError = validateName(name);
+    const lastNameError = validateLastName(lastName);
+    const idNumberError = validateIdNumber(idNumber);
+    const phoneNumberError = validatePhoneNumber(phoneNumber);
 
-    // Mostrar el modal de confirmación
-    showModal();
+    const errors = [nameError, lastNameError, idNumberError, phoneNumberError].filter(Boolean);
+
+    if (errors.length > 0) {
+      Alert.alert('Error', errors.join('\n'));
+    } else {
+      // Lógica para enviar el formulario
+      console.log('Nombre:', name);
+      console.log('Apellidos:', lastName);
+      console.log('Número de identificación:', idNumber);
+      console.log('Número de celular:', phoneNumber);
+
+      // Mostrar el modal de confirmación
+      showModal();
+    }
   };
 
   return (

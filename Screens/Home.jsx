@@ -17,11 +17,11 @@ const Home = () => {
           <Button style={styles.button} onPress={() => navigation.navigate('Notifications')}>
             <Text style={styles.buttonText}>Notificaciones</Text>
           </Button>
-          <Button style={styles.button} onPress={() => navigation.navigate('ServiceHistory')}>
-            <Text style={styles.buttonText}>Historial de Servicios</Text>
-          </Button>
           <Button style={styles.button} onPress={() => navigation.navigate('ServiceRequest')}>
             <Text style={styles.buttonText}>Solicitar Servicio</Text>
+          </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('ServiceHistory')}>
+            <Text style={styles.buttonText}>Historial de Servicios</Text>
           </Button>
           <Button style={styles.button} onPress={() => navigation.navigate('DealerInformation')}>
             <Text style={styles.buttonText}>Nosotros</Text>
