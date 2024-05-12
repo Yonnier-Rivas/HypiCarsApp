@@ -136,7 +136,7 @@ const ServiceRequest = () => {
         </Menu>
         <DatePickerInput
           style={styles.input}  
-          locale="en"
+          locale="es"
           label="Fecha de cita"
           value={appointmentDate}
           onChange={(d) => setAppointmentDate(d)}

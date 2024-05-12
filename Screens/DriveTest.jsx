@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, Alert} from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
 import { validateName, validateLastName, validateIdNumber, validatePhoneNumber, validateDate } from '../inputsValidations/validations';
 import { DatePickerInput } from 'react-native-paper-dates';
@@ -88,7 +88,7 @@ const DriveTest = () => {
         />
         <DatePickerInput
           style={styles.input}  
-          locale="en"
+          locale="es"
           label="Fecha de cita"
           value={appointmentDate}
           onChange={(d) => setAppointmentDate(d)}
