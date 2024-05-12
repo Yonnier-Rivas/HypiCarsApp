@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text } from 'react-native-paper';
 import { validateName, validateLastName, validateIdNumber, validatePhoneNumber} from '../inputsValidations/validations';
-
+import firebase from '../firebaseDB';
 
 const RequestQuote = () => {
   const [name, setName] = useState('');
@@ -15,6 +15,27 @@ const RequestQuote = () => {
   const hideModal = () => setVisible(false);
 
   const handleSubmit = () => {
+
+    const sendDataToFirebase = async (name, lastName, idNumber, phoneNumber) => {
+      try {
+        const quoteRef = await firebase.db.collection('Quotes').add({
+          name,
+          lastName,
+          idNumber,
+          phoneNumber,
+        });
+        console.log('Datos enviados a Firebase con ID:', quoteRef.id);
+    
+        // Restablecer los campos de entrada
+        setName('');
+        setLastName('');
+        setIdNumber('');
+        setPhoneNumber('');
+      } catch (error) {
+        console.error('Error al enviar datos a Firebase:', error);
+      }
+    };
+
     const nameError = validateName(name);
     const lastNameError = validateLastName(lastName);
     const idNumberError = validateIdNumber(idNumber);
@@ -25,14 +46,24 @@ const RequestQuote = () => {
     if (errors.length > 0) {
       Alert.alert('Error', errors.join('\n'));
     } else {
-      // Lógica para enviar el formulario
-      console.log('Nombre:', name);
-      console.log('Apellidos:', lastName);
-      console.log('Número de identificación:', idNumber);
-      console.log('Número de celular:', phoneNumber);
-
-      // Mostrar el modal de confirmación
-      showModal();
+      Alert.alert(
+        'Confirmar cotización',
+        '¿Estás seguro de enviar la solicitud de cotización?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Enviar',
+            onPress: () => {
+              sendDataToFirebase(name, lastName, idNumber, phoneNumber);
+              showModal();
+            },
+          },
+        ],
+        { cancelable: false }
+      );
     }
   };
 
