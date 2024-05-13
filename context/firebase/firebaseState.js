@@ -2,14 +2,15 @@ import React, {useReducer} from "react";
 import firebase from "../../firebaseDB";
 import FirebaseContext from "./firebaseContext";
 import FirebaseReducer from "./firebaseReducer";
-import { GET_VEHICLE_SUCCESSFUL } from '../../types'
+import { GET_VEHICLE_SUCCESSFUL, GET_HISTORY_SUCCESSFUL } from '../../types'
 import _ from 'lodash'
 
 
 const FirebaseState = props => {
     //Crear el estado inicial
      const inicialState ={
-        carsCatalog: []
+        carsCatalog: [],
+        historyCatalog: []
    }
 
    
@@ -38,12 +39,35 @@ const FirebaseState = props => {
      }
    }
 
+   const getServiceRequest = () =>{
+     firebase.db
+          .collection('ServiceRequests')
+          .onSnapshot(manageSnapshot)//Para el manejo de la BD en real time
+
+     function manageSnapshot(snapshot){
+          let services = snapshot.docs.map(doc => {
+               return{
+                    id: doc.id,
+                   ...doc.data()
+               }
+          }) 
+
+          services = _.sortBy(services, 'typeServiceScrollView')
+          dispatch({
+               type: GET_HISTORY_SUCCESSFUL,
+               payload: services
+          });
+     }
+   }
+
    return (
         <FirebaseContext.Provider 
                value={{
                     carsCatalog: state.carsCatalog,
+                    historyCatalog: state.historyCatalog,
                     firebase,
-                    getVehicles
+                    getVehicles,
+                    getServiceRequest         
                }}
           >
                {props.children}
