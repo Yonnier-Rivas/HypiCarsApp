@@ -1,7 +1,7 @@
 import React, {useReducer} from "react";
 import RequestContext from "./requestContext";
 import RequestReducer from "./requestReducer";
-import { SELECT_VEHICLE } from "../../types";
+import { SELECT_VEHICLE, SAVE_CAR, SHOW_CARSHOP, DELETE_VEHICLE_SHOP } from "../../types";
 
 const RequestState = props => {
     //Crear el estado inicial
@@ -21,12 +21,39 @@ const RequestState = props => {
      })
    }
 
+   //GUARDAR VEHICULO
+   const saveCar = request => {
+     dispatch({
+          type: SAVE_CAR,
+          payload: request
+     })
+   }
+
+   //MOSTRAR CARRITO DE COMPRAS
+   const showCarShop = total => {
+     dispatch({
+          type: SHOW_CARSHOP,
+          payload: total
+     })
+   }
+
+   //ELIMINAR VEHICULO DEL CARRITO DE COMPRAS
+   const deleteVehicleShop = id => {
+     dispatch({
+          type: DELETE_VEHICLE_SHOP,
+          payload: id
+     })
+   }
+
    return (
         <RequestContext.Provider
           value={{
                request: state.request,
                selectCar: state.selectCar,
-               getCar
+               getCar,
+               saveCar,
+               showCarShop,
+               deleteVehicleShop
           }}
           >
                {props.children}

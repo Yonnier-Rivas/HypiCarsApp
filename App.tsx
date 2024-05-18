@@ -14,6 +14,7 @@ import ServiceHistory from './Screens/ServiceHistory';
 import ServiceRequest from './Screens/ServiceRequest';
 import DealerInformation from './Screens/DealerInformation';
 import RequestQuote from './Screens/RequestQuote';
+import carShop from './Screens/carShop';
 
 import FirebaseState from './context/firebase/firebaseState';
 import RequestState from './context/requests/requestState';
@@ -82,6 +83,9 @@ const App = () => {
             />
             <Stack.Screen name="RequestQuote" component={RequestQuote}
               options={{title: 'Cotizar'}}
+            />
+             <Stack.Screen name="carShop" component={carShop}
+              options={{title: 'Carrito de Compras'}}
             />
 
           </Stack.Navigator>

@@ -1,14 +1,55 @@
-import React, { useContext } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Avatar, Card, Text, Divider, Button } from 'react-native-paper';
+import { Avatar, Card, Text, Divider, Button, TextInput } from 'react-native-paper';
 import RequestContext from '../context/requests/requestContext';
+import { FormControl, HStack } from 'native-base';
 
 const CarDetails = () => {
-  const { selectCar } = useContext(RequestContext)
-  const { image, brand, condition, description, model, price } = selectCar;
+  const { selectCar, saveCar } = useContext(RequestContext)
+  const { image, brand, condition, description, model, price, id } = selectCar;
   const navigation = useNavigation();
+  const [ cantidad, guardarCantidad ] = useState(0);
+
+  const decrementar = () =>{
+    if(cantidad > 1){
+        const nuevaCantidad = parseInt(cantidad) - 1
+        guardarCantidad(nuevaCantidad)
+    }
+}
+
+const incrementar = () =>{
+    const nuevaCantidad = parseInt(cantidad) + 1
+    guardarCantidad(nuevaCantidad)
+}
+
+const confirmarOrden =()=>{
+  Alert.alert('¿Deseas agregar este carro y cantidad',
+  'Este carro se agregara al carrito de compras',
+  [{
+      text: 'Confirmar',
+      onPress: () => {
+          //Almacenar el pedido al pedido principal
+          const request ={
+              ...selectCar,
+              cantidad,
+          }
+
+          saveCar(request)
+
+          //Navegar hacia resumen
+          navigation.navigate('carShop')
+      }
+      
+  },
+  {
+      text: 'Cancelar'
+      
+      }
+  ]
+)
+}
 
   return (
     <ScrollView style={styles.container}>
@@ -48,6 +89,40 @@ const CarDetails = () => {
               </Button>
             </View>
           </Card.Content>
+          <FormControl>
+            <Text>Cantidad: </Text>
+            <HStack space={3}>
+                        <Button 
+                          
+                            dark
+                            style = {{height:80, justifyContent:'center'}}
+                            onPress={()=> decrementar()}
+                        >-</Button>
+                        <TextInput
+                            style = {{textAlign:'center', fontSize:20}}
+                            keyboardType='numeric'
+                            onChangeText={ cantidad => guardarCantidad(cantidad)}
+                        > {cantidad}</TextInput> 
+                        <Button 
+                            props
+                            dark
+                            style = {{height:80, justifyContent:'center'}}
+                            onPress={()=> incrementar()}
+                        >+</Button>
+                    </HStack>
+                        <HStack>
+                            <Card>
+                                <Card.Actions>
+                                    <Button 
+
+                                      onPress={() => confirmarOrden()}
+                                    >
+                                       <Text>Ordenar</Text>
+                                    </Button>
+                                </Card.Actions>
+                            </Card>
+                        </HStack>
+          </FormControl>
         </Card>
       </View>
     </ScrollView>
