@@ -14,6 +14,9 @@ const Home = () => {
           <Button style={styles.button} onPress={() => navigation.navigate('CarsCatalog')}>
             <Text style={styles.buttonText}>Vehículos disponibles</Text>
           </Button>
+          <Button style={styles.button} onPress={() => navigation.navigate('CarShop')}>
+            <Text style={styles.buttonText}>Carrito de Compras</Text>
+          </Button>
           <Button style={styles.button} onPress={() => navigation.navigate('Notifications')}>
             <Text style={styles.buttonText}>Notificaciones</Text>
           </Button>

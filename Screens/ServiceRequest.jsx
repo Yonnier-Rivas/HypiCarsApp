@@ -32,7 +32,7 @@ const ServiceRequest = () => {
           vehicleModel,
           serviceType,
           appointmentDate,
-          appointmentTime //DARWIN: hay que organizar este para que sea un HORA y tambien crear la vaidacion en el archivo validations.
+          appointmentTime //DARWIN: hay que organizar este para que sea un HORA y tambien crear la validacion en el archivo validations.
         });
         console.log('Datos enviados a Firebase con ID:', serviceRequestRef.id);
     

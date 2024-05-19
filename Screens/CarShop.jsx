@@ -2,13 +2,16 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { Avatar, Text, Button, Card, Title, Paragraph, Divider } from 'react-native-paper';
+import { Avatar, Text, Button, Card, Title, Paragraph, Divider, Portal, Modal, TextInput, Provider } from 'react-native-paper';
+import { validateEmail } from '../inputsValidations/validations';
 import RequestContext from '../context/requests/requestContext';
-import { Box } from 'native-base';
+import firebase from '../firebaseDB';
 
 const CarShop = () => {
-    const { request, showCarShop, deleteVehicleShop, total } = useContext(RequestContext);
+    const { request, showCarShop, deleteVehicleShop, total, clearShop } = useContext(RequestContext);
     const [totalRequest, setTotalRequest] = useState(0);
+    const [visible, setVisible] = useState(false);
+    const [email, setEmail] = useState('');
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -40,6 +43,60 @@ const CarShop = () => {
                 }
             ]
         );
+    };
+
+    const handlePurchaseRequest = () => {
+
+
+        Alert.alert(
+            'Confirmar solicitud de compra',
+            '¿Estás seguro de que deseas solicitar la compra?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Confirmar',
+                    onPress: () => setVisible(true),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleEmailSubmit = async () => {
+
+        //Validar correo
+        const emailError = validateEmail(email);
+        const errors = [emailError].filter(Boolean);
+
+        if (errors.length > 0) {
+            Alert.alert('Error', errors.join('\n'));
+        } else {
+
+            try {
+                await firebase.db.collection('PurchaseRequests').add({
+                    email,
+                    request,
+                    totalRequest,
+                    status: 'Pending',
+                });
+
+                Alert.alert(
+                    'Solicitud creada exitosamente',
+                    'En los próximos días le contactaremos vía correo para proceder con la compra.',
+                    [{ text: 'Aceptar' }]
+                );
+                clearShop();
+                navigation.navigate('CarsCatalog');
+                setVisible(false);
+                setEmail('');
+            } catch (error) {
+                console.error('Error al guardar la solicitud en Firebase:', error);
+                Alert.alert('Error', 'Hubo un problema al crear la solicitud. Por favor, inténtelo de nuevo.');
+            }
+        }
     };
 
     const renderVehicle = ({ item }) => {
@@ -74,17 +131,43 @@ const CarShop = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={request}
-                renderItem={renderVehicle}
-                keyExtractor={item => item.id.toString()}
-                contentContainerStyle={styles.flatListContainer}
-            />
-            <View style={styles.totalContainer}>
-                <Text style={styles.totalText}>El total del pedido es: {totalRequest.toLocaleString('es-ES')}</Text>
+        <Provider>
+            <View style={styles.container}>
+                <FlatList
+                    data={request}
+                    renderItem={renderVehicle}
+                    keyExtractor={item => item.id.toString()}
+                    contentContainerStyle={styles.flatListContainer}
+                />
+                <View style={styles.totalContainer}>
+                    <Text style={styles.totalText}>El total del pedido es: {totalRequest.toLocaleString('es-ES')}</Text>
+                    <Button
+                        mode="contained"
+                        style={styles.orderButton}
+                        onPress={handlePurchaseRequest}
+                    >
+                        Solicitar Compra
+                    </Button>
+                </View>
+
+                <Portal>
+                    <Modal visible={visible} onDismiss={() => setVisible(false)} contentContainerStyle={styles.modal}>
+                        <Text style={styles.subTitle}>Ingrese su correo</Text>
+                        <TextInput
+                            label="Correo electrónico"
+                            value={email}
+                            onChangeText={setEmail}
+                            style={styles.input}
+                            mode="outlined"
+                            keyboardType="email-address"
+                        />
+                        <Button mode="contained" onPress={handleEmailSubmit} style={styles.button}>
+                            Enviar
+                        </Button>
+                    </Modal>
+                </Portal>
             </View>
-        </View>
+        </Provider>
     );
 };
 
@@ -118,6 +201,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
+    },
+    subTitle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 8,
     },
     condition: {
         fontSize: 16,
@@ -163,6 +251,23 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    orderButton: {
+        marginTop: 20,
+        backgroundColor: '#3d66ad',
+        borderRadius: 24,
+        paddingVertical: 10,
+    },
+    modal: {
+        padding: 24,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        borderRadius: 20,
+        margin: 10,
+    },
+    input: {
+        marginBottom: 16,
+        width: '80%',
     },
 });
 

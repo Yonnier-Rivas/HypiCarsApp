@@ -1,7 +1,7 @@
 import React, {useReducer} from "react";
 import RequestContext from "./requestContext";
 import RequestReducer from "./requestReducer";
-import { SELECT_VEHICLE, SAVE_CAR, SHOW_CARSHOP, DELETE_VEHICLE_SHOP } from "../../types";
+import { SELECT_VEHICLE, SAVE_CAR, SHOW_CARSHOP, DELETE_VEHICLE_SHOP, CLEAR_SHOP } from "../../types";
 
 const RequestState = props => {
     //Crear el estado inicial
@@ -45,6 +45,13 @@ const RequestState = props => {
      })
    }
 
+   //LIMPIAR EL CARRITO DE COMPRAS
+   const clearShop = () => {
+     dispatch({ 
+          type: CLEAR_SHOP 
+     });
+   };
+
    return (
         <RequestContext.Provider
           value={{
@@ -53,7 +60,8 @@ const RequestState = props => {
                getCar,
                saveCar,
                showCarShop,
-               deleteVehicleShop
+               deleteVehicleShop,
+               clearShop
           }}
           >
                {props.children}

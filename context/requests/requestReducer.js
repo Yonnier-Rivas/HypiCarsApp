@@ -1,4 +1,4 @@
-import { SELECT_VEHICLE, SAVE_CAR, SHOW_CARSHOP, DELETE_VEHICLE_SHOP } from "../../types";
+import { SELECT_VEHICLE, SAVE_CAR, SHOW_CARSHOP, DELETE_VEHICLE_SHOP, CLEAR_SHOP } from "../../types";
 
 export default (state, action) =>{
     switch(action.type){
@@ -24,6 +24,13 @@ export default (state, action) =>{
             return{
                 ...state,
                 request: state.request.filter(vehicle => vehicle.id !== action.payload)
+            }
+        
+        case CLEAR_SHOP:
+            return{
+               ...state,
+                total: 0,
+                request: []
             }
 
         default:
