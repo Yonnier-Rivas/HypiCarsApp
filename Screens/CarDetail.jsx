@@ -4,52 +4,48 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Card, Text, Divider, Button, TextInput } from 'react-native-paper';
 import RequestContext from '../context/requests/requestContext';
-import { FormControl, HStack } from 'native-base';
+import { Center, FormControl, HStack } from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const CarDetails = () => {
-  const { selectCar, saveCar } = useContext(RequestContext)
+  const { selectCar, saveCar } = useContext(RequestContext);
   const { image, brand, condition, description, model, price, id } = selectCar;
   const navigation = useNavigation();
-  const [ cantidad, guardarCantidad ] = useState(0);
+  const [quantity, saveQuatity] = useState(1);
 
-  const decrementar = () =>{
-    if(cantidad > 1){
-        const nuevaCantidad = parseInt(cantidad) - 1
-        guardarCantidad(nuevaCantidad)
+  const decrementar = () => {
+    if (quantity > 1) {
+      saveQuatity(quantity - 1);
     }
-}
+  };
 
-const incrementar = () =>{
-    const nuevaCantidad = parseInt(cantidad) + 1
-    guardarCantidad(nuevaCantidad)
-}
+  const incrementar = () => {
+    saveQuatity(quantity + 1);
+  };
 
-const confirmarOrden =()=>{
-  Alert.alert('¿Deseas agregar este carro y cantidad',
-  'Este carro se agregara al carrito de compras',
-  [{
-      text: 'Confirmar',
-      onPress: () => {
-          //Almacenar el pedido al pedido principal
-          const request ={
+  const confirmarOrden = () => {
+    Alert.alert(
+      '¿Deseas agregar este carro y quantity?',
+      'Este carro se agregará al carrito de compras',
+      [
+        {
+          text: 'Confirmar',
+          onPress: () => {
+            const request = {
               ...selectCar,
-              cantidad,
-          }
+              quantity,
+            };
 
-          saveCar(request)
-
-          //Navegar hacia resumen
-          navigation.navigate('carShop')
-      }
-      
-  },
-  {
-      text: 'Cancelar'
-      
-      }
-  ]
-)
-}
+            saveCar(request);
+            navigation.navigate('CarShop');
+          },
+        },
+        {
+          text: 'Cancelar',
+        },
+      ]
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -63,11 +59,7 @@ const confirmarOrden =()=>{
             <Text variant="bodyMedium" style={styles.price}>
               {price.toLocaleString()} $
             </Text>
-            <Avatar.Text
-              size={30}
-              label={condition}
-              style={styles.brandAvatar}
-            />
+            <Avatar.Text size={30} label={condition} style={styles.brandAvatar} />
             <Divider style={styles.divider} />
             <Text variant="bodyLarge" style={styles.description}>
               {description}
@@ -89,39 +81,33 @@ const confirmarOrden =()=>{
               </Button>
             </View>
           </Card.Content>
-          <FormControl>
-            <Text>Cantidad: </Text>
-            <HStack space={3}>
-                        <Button 
-                          
-                            dark
-                            style = {{height:80, justifyContent:'center'}}
-                            onPress={()=> decrementar()}
-                        >-</Button>
-                        <TextInput
-                            style = {{textAlign:'center', fontSize:20}}
-                            keyboardType='numeric'
-                            onChangeText={ cantidad => guardarCantidad(cantidad)}
-                        > {cantidad}</TextInput> 
-                        <Button 
-                            props
-                            dark
-                            style = {{height:80, justifyContent:'center'}}
-                            onPress={()=> incrementar()}
-                        >+</Button>
-                    </HStack>
-                        <HStack>
-                            <Card>
-                                <Card.Actions>
-                                    <Button 
-
-                                      onPress={() => confirmarOrden()}
-                                    >
-                                       <Text>Ordenar</Text>
-                                    </Button>
-                                </Card.Actions>
-                            </Card>
-                        </HStack>
+          <FormControl style={styles.formControl}>
+            <Text style={styles.quantityLabel}>Cantidad a ordenar:</Text>
+            <HStack space={3} style={styles.quantityContainer}>
+              <Button
+                dark
+                style={styles.quantityButton}
+                onPress={() => decrementar()}
+              >➖</Button>
+              <TextInput
+                style={styles.quantityInput}
+                keyboardType="numeric"
+                value={String(quantity)}
+                onChangeText={quantity => saveQuatity(parseInt(quantity))}
+              />
+              <Button
+                dark
+                style={styles.quantityButton}
+                onPress={incrementar}
+              >➕</Button>
+            </HStack>
+            <Button
+              mode="contained"
+              style={styles.orderButton}
+              onPress={confirmarOrden}
+            >
+              Ordenar
+            </Button>
           </FormControl>
         </Card>
       </View>
@@ -168,7 +154,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     width: 55,
     borderRadius: 16,
-
   },
   divider: {
     marginVertical: 16,
@@ -203,6 +188,43 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: '#5C6972',
     elevation: 2,
+  },
+  formControl: {
+    marginTop: 16,
+    borderRadius: 20,
+    padding: 16,
+    backgroundColor: '#f0f1f5',
+    elevation: 4,
+  },
+  quantityLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  quantityContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quantityButton: {
+    backgroundColor: 'none',
+    borderRadius: 10,
+    justifyContent: 'center',
+    padding: 8,
+  },
+  quantityInput: {
+    fontSize: 20,
+    width: 50,
+    borderWidth: 1,
+    borderColor: '#3B63A8',
+    marginHorizontal: 8,
+    backgroundColor: '#dce8fc',
+    borderRadius: 8,
+  },
+  orderButton: {
+    marginTop: 20,
+    backgroundColor: '#3d66ad',
+    borderRadius: 24,
+    paddingVertical: 10,
   },
 });
 
