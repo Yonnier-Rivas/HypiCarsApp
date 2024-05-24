@@ -16,6 +16,12 @@ const Home = () => {
     setShowPopup(!showPopup);
   };
 
+  const handleViewMore = () => {
+    togglePopup(); // Cierra el modal
+    navigation.navigate('CarsCatalog'); // Navega a CarsCatalog
+  };
+
+
   return (
     <ImageBackground source={require('../images/white.jpg')} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -52,7 +58,7 @@ const Home = () => {
                 <TouchableOpacity style={styles.ctaButton} onPress={togglePopup}>
                   <Text style={styles.ctaText}>Salir</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.ctaButton} onPress={() => navigation.navigate('CarsCatalog')}>
+                <TouchableOpacity style={styles.ctaButton} onPress={handleViewMore}>
                   <Text style={styles.ctaText}>Ver más</Text>
                 </TouchableOpacity>
               </View>
