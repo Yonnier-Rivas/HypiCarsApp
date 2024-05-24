@@ -84,7 +84,7 @@ export const validateDate = (date) => {
   }
 
   const currentDate = new Date();
-  if (date < currentDate) {
+  if (date > currentDate) {
     return 'La fecha no puede ser menor a la fecha actual.';
   }
 
