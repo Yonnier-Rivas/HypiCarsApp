@@ -75,7 +75,6 @@ const FirebaseState = props => {
           }) 
 
           promotion = _.sortBy(promotion, 'typeOfferScrollView')
-          console.log("recibiendo ofertas")
           dispatch({
                type: GET_OFFERS_SUCCESSFUL,
                payload: promotion

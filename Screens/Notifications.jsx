@@ -20,6 +20,11 @@ const Notifications = () => {
     setShowModal(!showModal);
   };
 
+  const handleViewMore = () => {
+    toggleModal(); // Cierra el modal
+    navigation.navigate('CarsCatalog'); // Navega a CarsCatalog
+  };
+
   return (
     <>
       <ScrollView>
@@ -67,7 +72,7 @@ const Notifications = () => {
                             <TouchableOpacity style={styles.ctaButton} onPress={toggleModal}>
                                 <Text style={styles.ctaText}>Salir</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.ctaButton} onPress={() => navigation.navigate('CarsCatalog')}>
+                            <TouchableOpacity style={styles.ctaButton} onPress={handleViewMore}>
                                 <Text style={styles.ctaText}>Ver más</Text>
                             </TouchableOpacity>
                         </View>
