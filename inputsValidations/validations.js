@@ -98,7 +98,7 @@ export const validateVehicleModel = (vehicleModel) => {
     return 'Por favor, ingrese un modelo.';
   }
 
-  const modelCarRegex = /^[a-zA-Z\s]+$/;
+  const modelCarRegex =/^[a-zA-Z0-9\s]+$/
   if (!modelCarRegex.test(vehicleModel)) {
     return 'Por favor, ingrese un modelo válido.';
   }
@@ -119,6 +119,39 @@ export const validateEmail = (email) => {
 
   return '';
 };
+
+export const validateTime = (text) => {
+  const minTime = '08:00'; // Hora mínima permitida (7:00 AM)
+  const maxTime = '17:00'; // Hora máxima permitida (5:00 PM)
+  const minTime2 = '00:00'; // Hora mínima permitida (12:00 AM)
+  const maxTime2 = '01:00'; // Hora máxima permitida (1:00 AM)
+  let errorMessage = '';
+  
+  if (!text.trim()) {
+    // Permitir borrar el campo
+    return errorMessage;
+  }
+  
+  const regex = /^[0-9:]*$/;
+  if (!regex.test(text)) {
+    return 'Ingrese un formato de hora válido (HH:MM)';
+  } else {
+    const [hours, minutes] = text.split(':');
+    const horaIngresada = `${hours.padStart(2, '0')}:${(minutes || '0').padStart(2, '0')}`;
+    
+    if (parseInt(minutes) >= 60) {
+      return 'Los minutos no pueden ser 60. Por favor, ingrese una hora válida.';
+    } else if (!(
+      (horaIngresada >= minTime && horaIngresada <= maxTime) || 
+      (horaIngresada >= minTime2 && horaIngresada <= maxTime2)
+    )) {
+      return 'La hora de la cita debe pedirse entre las 8 am - 5 pm';
+    }
+  }
+  
+  return errorMessage;
+};
+
 
 //Validación para el tipo de servicio
 export const ValidateSelectedService = (selectedService) => {

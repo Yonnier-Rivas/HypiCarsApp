@@ -2,7 +2,7 @@ import React, {useReducer} from "react";
 import firebase from "../../firebaseDB";
 import FirebaseContext from "./firebaseContext";
 import FirebaseReducer from "./firebaseReducer";
-import { GET_VEHICLE_SUCCESSFUL, GET_HISTORY_SUCCESSFUL } from '../../types'
+import { GET_VEHICLE_SUCCESSFUL, GET_HISTORY_SUCCESSFUL,GET_OFFERS_SUCCESSFUL } from '../../types'
 import _ from 'lodash'
 
 
@@ -10,7 +10,8 @@ const FirebaseState = props => {
     //Crear el estado inicial
      const inicialState ={
         carsCatalog: [],
-        historyCatalog: []
+        historyCatalog: [],
+        offersCatalog:[]
    }
 
    
@@ -60,14 +61,38 @@ const FirebaseState = props => {
      }
    }
 
+   const getOffers = () =>{
+     firebase.db
+          .collection('Offers')
+          .onSnapshot(manageSnapshot)//Para el manejo de la BD en real time
+
+     function manageSnapshot(snapshot){
+          let promotion = snapshot.docs.map(doc => {
+               return{
+                    id: doc.id,
+                   ...doc.data()
+               }
+          }) 
+
+          promotion = _.sortBy(promotion, 'typeOfferScrollView')
+          console.log("recibiendo ofertas")
+          dispatch({
+               type: GET_OFFERS_SUCCESSFUL,
+               payload: promotion
+          });
+     }
+   }
+
    return (
         <FirebaseContext.Provider 
                value={{
                     carsCatalog: state.carsCatalog,
                     historyCatalog: state.historyCatalog,
+                    offersCatalog:state.offersCatalog,
                     firebase,
                     getVehicles,
-                    getServiceRequest         
+                    getServiceRequest,
+                    getOffers
                }}
           >
                {props.children}

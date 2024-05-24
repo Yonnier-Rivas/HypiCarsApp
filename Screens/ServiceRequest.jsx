@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Alert } from 'react-native';
 import { TextInput, Button, Headline, Subheading, Divider, Portal, Modal, Provider, Text, Menu } from 'react-native-paper';
-import { validateName, validateDate, validateVehicleModel, validatePhone, validateEmail, ValidateSelectedService } from '../inputsValidations/validations';
+import { validateName, validateDate, validateVehicleModel, validatePhone, validateEmail, ValidateSelectedService, validateTime } from '../inputsValidations/validations';
 import { DatePickerInput } from 'react-native-paper-dates';
 import firebase from '../firebaseDB';
 
@@ -12,8 +12,9 @@ const ServiceRequest = () => {
   const [vehicleModel, setVehicleModel] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [appointmentDate, setAppointmentDate] = useState(undefined);
-  const [appointmentTime, setAppointmentTime] = useState('')
+  const [appointmentTime, setAppointmentTime] = useState('');
   const [visible, setVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -21,8 +22,17 @@ const ServiceRequest = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [selectedService, setSelectedService] = useState('');
 
-  const handleSubmit = () => {
+  const handleTimeChange = (text) => {
+    const error = validateTime(text);
+    if (error) {
+      setErrorMessage(error);
+    } else {
+      setErrorMessage('');
+      setAppointmentTime(text);
+    }
+  };
 
+  const handleSubmit = () => {
     const sendDataToFirebase = async (name, phone, email, vehicleModel, serviceType, appointmentDate, appointmentTime) => {
       try {
         const serviceRequestRef = await firebase.db.collection('ServiceRequests').add({
@@ -32,10 +42,10 @@ const ServiceRequest = () => {
           vehicleModel,
           serviceType,
           appointmentDate,
-          appointmentTime //DARWIN: hay que organizar este para que sea un HORA y tambien crear la validacion en el archivo validations.
+          appointmentTime,
         });
         console.log('Datos enviados a Firebase con ID:', serviceRequestRef.id);
-    
+
         // Restablecer los campos de entrada
         setName('');
         setPhone('');
@@ -55,8 +65,9 @@ const ServiceRequest = () => {
     const vehicleModelError = validateVehicleModel(vehicleModel);
     const emailError = validateEmail(email);
     const serviceTypeError = ValidateSelectedService(selectedService);
+    const timeError = validateTime(appointmentTime);
 
-    const errors = [nameError, dateError, phoneError, vehicleModelError, emailError, serviceTypeError].filter(Boolean);
+    const errors = [nameError, dateError, phoneError, vehicleModelError, emailError, serviceTypeError, timeError].filter(Boolean);
 
     if (errors.length > 0) {
       Alert.alert('Error', errors.join('\n'));
@@ -86,7 +97,7 @@ const ServiceRequest = () => {
     <Provider>
       <ScrollView contentContainerStyle={styles.container}>
         <Headline style={styles.title}>Solicitar Servicio</Headline>
-        <Text style={styles.subtitle}>¿Deseas slicitar un servicio? Llena el siguiente formulario:</Text>
+        <Text style={styles.subtitle}>¿Deseas solicitar un servicio? Llena el siguiente formulario:</Text>
         <TextInput
           label="Nombre"
           value={name}
@@ -104,7 +115,7 @@ const ServiceRequest = () => {
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
-          keyboardType="phone-pad"
+          keyboardType="numeric"
         />
         <TextInput
           label="Correo electrónico"
@@ -148,8 +159,8 @@ const ServiceRequest = () => {
               setMenuVisible(false);
             }}
             title="Mantenimiento"
-            titleStyle={styles.menuItemText} 
-            style={styles.menuItem} 
+            titleStyle={styles.menuItemText}
+            style={styles.menuItem}
           />
           <Menu.Item
             onPress={() => {
@@ -171,7 +182,7 @@ const ServiceRequest = () => {
           />
         </Menu>
         <DatePickerInput
-          style={styles.input}  
+          style={styles.input}
           locale="es"
           label="Fecha de cita"
           value={appointmentDate}
@@ -183,14 +194,16 @@ const ServiceRequest = () => {
         />
         <TextInput
           label="Hora"
-          value={appointmentDate}
-          onChangeText={setAppointmentTime}
+          value={appointmentTime}
+          onChangeText={handleTimeChange}
           style={styles.input}
           mode="outlined"
           outlineColor="#3B63A8"
           activeOutlineColor="#3B63A8"
+          maxLength={5}
         />
-        <Button mode="contained" onPress={handleSubmit} style={styles.button} >
+        {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+        <Button mode="contained" onPress={handleSubmit} style={styles.button}>
           Enviar
         </Button>
       </ScrollView>
@@ -218,6 +231,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  subtitle: {
+    textAlign: 'center',
+    marginBottom: 16,
+  },
   input: {
     marginBottom: 16,
     borderRadius: 20,
@@ -239,8 +256,8 @@ const styles = StyleSheet.create({
   menuContainer: {
     backgroundColor: '#ffffff',
     borderRadius: 8,
-    elevation: 4, 
-    shadowColor: '#000000', 
+    elevation: 4,
+    shadowColor: '#000000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -256,6 +273,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#333333',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
   },
 });
 
